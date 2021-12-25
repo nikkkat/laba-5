@@ -1,0 +1,72 @@
+#include <iostream>
+#include "..\staticlib\Header.h"
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	
+	// ввод размеров массивов, создание массивов
+
+	cout << "введите количество строк и столбцов массива:" << endl << "n: ";
+	int n, m;
+	cin >> n;
+	cout << "m: ";
+	cin >> m;
+
+	int** a = new int* [n];
+	for (int i = 0; i < n; i++)
+	{
+		a[i] = new int[m];
+	}
+
+	int* s = new int[m];
+
+	// ввод элементов двумерного массива, вывод матрицы
+
+	cout << endl << "введите элемент массива:" << endl;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			int aa;
+			cin >> aa;
+			a[i][j] = aa;
+		}
+	}
+
+	cout << endl << "матрица А:" << endl;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < m; j++)
+		{
+			cout << a[i][j] << "\t";
+		}
+		cout << endl;
+	}
+
+	// заполнение массива S суммами элементов массива А, вывод массива S
+
+	fillarr(a, s, n, m);
+
+	cout << endl << "одномерный массив S:" << endl;
+	for (int j = 0; j < m; j++)
+	{
+		cout << s[j] << "\t";
+	}
+
+	// поиск и вывод наименьшего элемента среди массива S
+
+	cout << endl << endl << "наименьший элемент массива S: " << minimal(s, m) << endl;
+
+	// очистка памяти
+
+	for (int i = 0; i < n; i++)
+	{
+		delete[] a[i];
+	}
+	delete[] a;
+	delete[] s;
+
+	return 0;
+}

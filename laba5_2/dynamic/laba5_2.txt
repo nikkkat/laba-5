@@ -1,0 +1,63 @@
+#include <iostream>
+#include <Windows.h>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+	// подключение динамической библиотеки
+
+	HINSTANCE load;
+	load = LoadLibrary(L"dynamic.dll");
+	typedef bool (*foo) (double);
+	foo Func;
+	Func = (foo)GetProcAddress(load, "Func");
+
+	setlocale(LC_ALL, "ru");
+
+	// заполнение массива
+
+	int n;
+	cout << "введите количество элементов в массиве: ";
+	cin >> n;
+
+	int* arr = new int[n];
+	cout << endl << "введите элемент массива:" << endl;
+	for (int i = 0; i < n; i++) {
+		cin >> arr[i];
+	}
+
+	// создание массива, где каждый элемент имеет значение косинуса элемента с таким же номером в изначальном массиве
+
+	double* acos = new double[n];
+	cout << endl << "массив косинусов:" << endl;
+	for (int i = 0; i < n; i++)
+	{
+		acos[i] = cos(arr[i]);
+		cout << acos[i] << "\t";
+	}
+
+	// проверка с помощью функции значений косинусов
+
+	for (int i = 0; i < n; i++)
+	{
+		arr[i] = Func(acos[i]);
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		if (arr[i] == 0) { cout << endl << endl << "условие выполняется не для всех элементов" << endl; 
+		delete[] acos;
+		delete[] arr;
+		FreeLibrary(load);
+		return 0; }
+	}
+
+	cout << endl << endl << "условие выполняется для всех элементов" << endl;
+
+	delete[] acos;
+	delete[] arr;
+	FreeLibrary(load);
+
+	return 0;
+}

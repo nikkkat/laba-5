@@ -1,0 +1,99 @@
+#include <iostream>
+using namespace std;
+
+void fillarr(int& rows, int& cols, int** arr) // функция для запонения двумерного массива с клавиатуры
+{
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			int aa;
+			cin >> aa;
+			arr[i][j] = aa;
+		}
+	}
+}
+
+void showarr(int& rows, int& cols, int** arr) // функция для выводы двумерного массива на консоль
+{
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			cout << arr[i][j] << "\t";
+		}
+		cout << endl;
+	}
+}
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	// создание массива
+
+	int rows = 1, cols = 1;
+	cout << "введите число строк: ";
+	cin >> rows;
+	cout << "введите число столбцов: ";
+	cin >> cols;
+
+	int** a = new int* [rows];
+	for (int i = 0; i < rows; i++)
+	{
+		a[i] = new int[cols];
+	}
+
+	// заполнение с клавиатуры и вывод на консоль массива
+
+	cout << "введите элементы массива:" << endl;
+	
+	fillarr(rows, cols, a);
+
+	cout << "массив:" << endl;
+	
+	showarr(rows, cols, a);
+	
+	// создание и заполнение нового массива, где только чётные элементы из главной диагонали исходного
+
+	int size = rows;
+	if (rows < cols) { size = rows; }
+	else { size = cols; }
+	int* anew = new int[size];
+	int k = 0;
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			if (i == j)
+			{
+				if (a[i][j] % 2 == 0)
+				{
+					anew[k] = a[i][j];
+					k++;
+				}
+				else { size--; }
+			}
+		}
+	}
+
+	// вывод нового массива
+
+	cout << endl << "итоговые данные:" << endl;
+	for (int i = 0; i < size; i++)
+	{
+		cout << anew[i] << "\t";
+	}
+	cout << endl;
+
+	// очистка памяти
+
+	for (int i = 0; i < rows; i++)
+	{
+		delete[] a[i];
+	}
+	delete[] a;
+	delete[] anew;
+
+	return 0;
+}
